@@ -3,6 +3,7 @@ package backend;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,6 +21,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:5174}")
+    private List<String> allowedOrigins;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -29,49 +33,50 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of(
-    "http://localhost:5173",
-    "http://localhost:5174"
-));        config.setAllowedMethods(
+        config.setAllowedOrigins(allowedOrigins);
+
+        config.setAllowedMethods(
             List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
         );
-        config.setAllowedHeaders(List.of("Content-Type", "Authorization"));
+
+        config.setAllowedHeaders(
+            List.of("Content-Type", "Authorization")
+        );
+
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source =
             new UrlBasedCorsConfigurationSource();
 
         source.registerCorsConfiguration("/**", config);
+
         return source;
     }
 
-    
-@Bean
-public SecurityFilterChain securityFilterChain(
-        HttpSecurity http,
-        JwtService jwtService) throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            JwtService jwtService) throws Exception {
 
-    JwtAuthenticationFilter jwtFilter =
+        JwtAuthenticationFilter jwtFilter =
             new JwtAuthenticationFilter(jwtService);
 
-    http
-        .cors(cors -> cors.configurationSource(
+        http
+            .cors(cors -> cors.configurationSource(
                 corsConfigurationSource()))
-        .csrf(csrf -> csrf.disable())
-        .sessionManagement(session -> session
-                .sessionCreationPolicy(
-                        SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> auth
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                        "/",
-                        "/api/auth/**"
+                    "/",
+                    "/api/auth/**"
                 ).permitAll()
                 .anyRequest().authenticated())
-        .addFilterBefore(
+            .addFilterBefore(
                 jwtFilter,
                 UsernamePasswordAuthenticationFilter.class);
 
-    return http.build();
-}
-
+        return http.build();
+    }
 }
