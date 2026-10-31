@@ -21,9 +21,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:5174}")
-    private List<String> allowedOrigins;
-
+@Value("${app.cors.allowed-origins:http://localhost:5173,http://localhost:5174,https://shikshahub-three.vercel.app}")
+private List<String> allowedOrigins;
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
