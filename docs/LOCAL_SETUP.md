@@ -1,65 +1,56 @@
-# Local setup
+# ShikshaHub – Local Setup Guide
 
-## Prerequisites
-- Java 21
-- Node.js and npm
-- MySQL Server
+Follow these steps to run ShikshaHub on your local machine.
 
-Check installations:
+## 1. Create the database
 
-```bash
-java -version
-node --version
-npm --version
-```
-
-## 1. Create database
-
-Start MySQL and run:
+Create a MySQL-compatible database named `shikshahub`:
 
 ```sql
-CREATE DATABASE learnhub;
+CREATE DATABASE shikshahub;
 ```
 
-Use a dedicated MySQL user with access only to this database where possible.
+Use a dedicated database user with access only to this database where possible.
 
-## 2. Configure backend
+## 2. Configure the backend
 
 Copy `backend/src/main/resources/application-example.properties` to `backend/src/main/resources/application.properties`.
 
-Windows PowerShell:
+**Windows PowerShell:**
 
 ```powershell
 Copy-Item backend/src/main/resources/application-example.properties backend/src/main/resources/application.properties
 ```
 
-macOS/Linux:
+**macOS / Linux:**
 
 ```bash
 cp backend/src/main/resources/application-example.properties backend/src/main/resources/application.properties
 ```
 
-Set your local database credentials and a private JWT secret of at least 32 bytes. Never commit this file.
+Configure your database URL, username, password, and a private JWT secret. Never commit your real credentials or `application.properties` file.
 
-## 3. Run backend
+For TiDB Cloud, use the connection details provided by your TiDB instance and enable the required TLS settings.
 
-Windows:
+## 3. Run the backend
+
+**Windows PowerShell:**
 
 ```powershell
 cd backend
 .\mvnw.cmd spring-boot:run
 ```
 
-macOS/Linux:
+**macOS / Linux:**
 
 ```bash
 cd backend
 ./mvnw spring-boot:run
 ```
 
-The local backend uses port 8080.
+The backend runs on port `8080` by default.
 
-## 4. Run frontend
+## 4. Run the frontend
 
 Open a second terminal:
 
@@ -74,10 +65,10 @@ Open the URL printed by Vite (normally `http://localhost:5173`).
 ## 5. Smoke test
 
 1. Register a test account and log in.
-2. Enroll in a course.
+2. Browse and enroll in a course.
 3. Mark a lesson complete and refresh the page.
-4. Confirm progress is retained.
-5. Submit a review.
+4. Confirm that progress is retained.
+5. Submit a course review.
 6. Test profile-name and password updates.
 
 Use test accounts and non-sensitive sample data.
