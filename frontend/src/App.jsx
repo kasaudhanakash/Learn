@@ -607,7 +607,7 @@ async function handleSubmitReview() {
             goHome('home');
           }}
         >
-          LearnHub
+          ShikshaHub
         </a>
 
         <div className="nav-links">
@@ -1262,15 +1262,15 @@ async function handleSubmitReview() {
 
           {/* About */}
           <section id="about" className="about-section">
-            <h2>About LearnHub</h2>
+            <h2>About ShikshaHub </h2>
             <p>
-              LearnHub helps learners build practical skills through
+              ShikshaHub helps learners build practical skills through
               online courses.
             </p>
           </section>
 
           <footer className="footer">
-            © 2026 LearnHub. Keep learning, keep growing.
+            © 2026 ShikshaHub. Keep learning, keep growing.
           </footer>
         </>
       )}

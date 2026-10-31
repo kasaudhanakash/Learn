@@ -1,10 +1,11 @@
-# LearnHub — Online Learning Platform
+# ShikshaHub — Online Learning Platform
 
-A full-stack online learning platform built with **React**, **Spring Boot**, and **MySQL**. Students can register, log in, browse courses, enroll, track lesson completion, and submit course reviews.
+A full-stack online learning platform built with **React**, **Spring Boot**, and **MySQL-compatible TiDB Cloud**. Students can register, log in, browse courses, enroll, track lesson completion, and submit course reviews.
 
-> **Status:** Local-development project. A public live demo has not been deployed yet.
+> **Status:** Local development and cloud database integration completed. Public live deployment is pending.
 
 ## Features
+
 - Student registration and JWT-based login
 - BCrypt password hashing with Spring Security
 - Course catalogue with title search and category filtering
@@ -13,7 +14,7 @@ A full-stack online learning platform built with **React**, **Spring Boot**, and
 - Student dashboard with enrolled courses and progress summaries
 - Profile-name and password updates
 
-## Technology stack
+## Technology Stack
 
 | Layer | Technology |
 |---|---|
@@ -21,13 +22,13 @@ A full-stack online learning platform built with **React**, **Spring Boot**, and
 | Backend | Java 21, Spring Boot, Spring Web |
 | Security | Spring Security, JWT (JJWT), BCrypt |
 | Persistence | Spring Data JPA, Hibernate |
-| Database | MySQL |
+| Database | TiDB Cloud (MySQL compatible) |
 | Build tools | npm, Maven Wrapper |
 
-## Repository structure
+## Repository Structure
 
 ```text
-Learn/
+ShikshaHub/
 ├── frontend/                  # React + Vite application
 │   ├── public/
 │   ├── src/
@@ -44,17 +45,18 @@ Learn/
 └── README.md
 ```
 
-## Run locally
+## Run Locally
 
 ### Prerequisites
+
 - Java 21
 - Node.js and npm
-- MySQL Server
+- MySQL Server or TiDB Cloud credentials
 
-### 1. Create the database
+### 1. Create a database
 
 ```sql
-CREATE DATABASE learnhub;
+CREATE DATABASE shikshahub;
 ```
 
 ### 2. Configure the backend
@@ -62,26 +64,30 @@ CREATE DATABASE learnhub;
 Copy the example configuration to your private local configuration file.
 
 **Windows PowerShell**
+
 ```powershell
 Copy-Item backend/src/main/resources/application-example.properties backend/src/main/resources/application.properties
 ```
 
 **macOS/Linux**
+
 ```bash
 cp backend/src/main/resources/application-example.properties backend/src/main/resources/application.properties
 ```
 
-Edit `application.properties` and set your local database username/password and a private JWT secret of at least 32 bytes. Never commit this file or share its values.
+Configure your database URL, username, password, and a private JWT secret using environment variables. Never commit credentials or secrets.
 
 Start the backend:
 
 **Windows**
+
 ```powershell
 cd backend
 .\mvnw.cmd spring-boot:run
 ```
 
 **macOS/Linux**
+
 ```bash
 cd backend
 ./mvnw spring-boot:run
@@ -102,6 +108,7 @@ npm run dev
 Open the URL printed by Vite (normally `http://localhost:5173`).
 
 ### 4. Try the application
+
 1. Register a test student account.
 2. Log in.
 3. Search and filter the course catalogue.
@@ -110,7 +117,7 @@ Open the URL printed by Vite (normally `http://localhost:5173`).
 6. Submit a course review.
 7. Test profile-name and password updates.
 
-## API overview
+## API Overview
 
 Authenticated requests use `Authorization: Bearer <token>`.
 
@@ -131,20 +138,24 @@ Authenticated requests use `Authorization: Bearer <token>`.
 Add real, non-sensitive screenshots under `docs/images/` (homepage, course catalogue, course details, login/register, dashboard). Do not show real email addresses, passwords, tokens, or private data.
 
 ## Documentation
+
 - [Local setup](docs/LOCAL_SETUP.md)
 - [Deployment readiness](docs/DEPLOYMENT.md)
 
 ## Security
+
 - Keep `application.properties` and `.env` files out of Git.
 - Use a unique, random JWT signing secret for each environment.
 - Use a restricted database user and HTTPS in production.
-- Current API URL and CORS settings target localhost; see the deployment guide before publishing.
+- Configure frontend API URL and backend CORS origin for each deployment environment.
 
-## Future improvements
-- Environment-configurable frontend API URL and backend CORS origin
+## Future Improvements
+
 - Automated frontend/backend tests and CI
 - Course content managed by the backend/database
 - Public deployment and screenshots
+- Improved course discovery and learning features
 
 ## Author
+
 **Akash Gupta** — [GitHub](https://github.com/kasaudhanakash)

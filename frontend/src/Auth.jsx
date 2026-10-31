@@ -117,17 +117,17 @@ alert(data.message || 'Registration successful');
           className="back-btn"
           onClick={onBack}
         >
-          ← Back to LearnHub
+          ← Back to ShikshaHub
         </button>
 
-        <h1>LearnHub</h1>
+        <h1>ShikshaHub</h1>
 
         <h2>{isLogin ? 'Welcome Back!' : 'Create Account'}</h2>
 
         <p>
           {isLogin
             ? 'Login to continue your learning journey.'
-            : 'Register to start learning with LearnHub.'}
+            : 'Register to start learning with ShikshaHub.'}
         </p>
 
         <form onSubmit={handleSubmit}>
