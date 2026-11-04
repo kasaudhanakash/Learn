@@ -247,6 +247,19 @@ function App() {
   const [courseReviews, setCourseReviews] = useState({});
   const [savingProgress, setSavingProgress] = useState(false);
 
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  const [contactStatus, setContactStatus] = useState({
+    type: '',
+    message: '',
+  });
+
+
   
   // Filter courses.
   const filteredCourses = courses.filter((course) => {
@@ -571,6 +584,33 @@ async function handleSubmitReview() {
 }
 
 
+  // Submit a contact message to the backend.
+  async function handleContactSubmit(event) {
+    event.preventDefault();
+    setContactSubmitting(true);
+    setContactStatus({ type: '', message: '' });
+
+    try {
+      await apiRequest('/api/contact', {
+        method: 'POST',
+        body: JSON.stringify(contactForm),
+      });
+
+      setContactStatus({
+        type: 'success',
+        message: 'Your message has been submitted successfully!',
+      });
+      setContactForm({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      setContactStatus({
+        type: 'error',
+        message: error.message || 'Unable to send your message. Please try again.',
+      });
+    } finally {
+      setContactSubmitting(false);
+    }
+  }
+
   // Logout.
   function handleLogout() {
     localStorage.removeItem('learnhub-token');
@@ -649,6 +689,16 @@ async function handleSubmitReview() {
             }}
           >
             My Dashboard
+          </a>
+
+          <a
+            href="#contact"
+            onClick={(event) => {
+              event.preventDefault();
+              goHome('contact');
+            }}
+          >
+            Contact
           </a>
         </div>
 
@@ -1267,6 +1317,56 @@ async function handleSubmitReview() {
               ShikshaHub helps learners build practical skills through
               online courses.
             </p>
+          </section>
+
+          {/* Contact Us */}
+          <section id="contact" className="contact-section">
+            <div className="section-heading">
+              <span>GET IN TOUCH</span>
+              <h2>Contact Us</h2>
+              <p>Have a question or need help? Send our team a message.</p>
+            </div>
+
+            <form className="contact-form" onSubmit={handleContactSubmit}>
+              <div className="contact-form-row">
+                <label>
+                  Your Name
+                  <input type="text" name="name" value={contactForm.name}
+                    onChange={(event) => setContactForm((previous) => ({ ...previous, name: event.target.value }))}
+                    maxLength={100} placeholder="Enter your name" required />
+                </label>
+                <label>
+                  Email Address
+                  <input type="email" name="email" value={contactForm.email}
+                    onChange={(event) => setContactForm((previous) => ({ ...previous, email: event.target.value }))}
+                    maxLength={150} placeholder="Enter your email" required />
+                </label>
+              </div>
+
+              <label>
+                Subject
+                <input type="text" name="subject" value={contactForm.subject}
+                  onChange={(event) => setContactForm((previous) => ({ ...previous, subject: event.target.value }))}
+                  maxLength={150} placeholder="What is your message about?" required />
+              </label>
+
+              <label>
+                Message
+                <textarea name="message" value={contactForm.message}
+                  onChange={(event) => setContactForm((previous) => ({ ...previous, message: event.target.value }))}
+                  maxLength={3000} rows={6} placeholder="Write your message here..." required />
+              </label>
+
+              {contactStatus.message && (
+                <p className={`contact-status ${contactStatus.type}`} role="status" aria-live="polite">
+                  {contactStatus.message}
+                </p>
+              )}
+
+              <button type="submit" className="contact-submit-btn" disabled={contactSubmitting}>
+                {contactSubmitting ? 'Sending...' : 'Send Message'}
+              </button>
+            </form>
           </section>
 
           <footer className="footer">
