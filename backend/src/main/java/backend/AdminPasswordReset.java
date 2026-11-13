@@ -25,7 +25,7 @@ public class AdminPasswordReset {
         return args -> userRepository.findByEmail(email)
             .ifPresentOrElse(user -> {
                 user.setPassword(passwordEncoder.encode(password));
-                user.setRole("ADMIN");
+              
                 userRepository.save(user);
                 System.out.println("Admin password reset successful");
             }, () -> System.out.println("Admin account not found"));
